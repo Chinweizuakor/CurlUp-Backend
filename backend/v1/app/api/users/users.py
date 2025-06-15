@@ -19,8 +19,8 @@ async def register(
 async def register(
         user: UserInDB = Body(..., embed=True)
 ):
-    print(user.dict())
-    return UserInDB(**new_user.dict())
+    print(user)
+    return UserInDB(**user.dict())
 
 
 
