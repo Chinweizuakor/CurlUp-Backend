@@ -15,7 +15,7 @@ async def register(
     return UserPublic(**new_user.dict())
 
 
-@router.post("/login", response_model=UserPublic, tags=["users"])
+@router.post("/login", response_model=UserInDB, tags=["users"])
 async def register(
         user: UserInDB = Body(..., embed=True)
 ):
