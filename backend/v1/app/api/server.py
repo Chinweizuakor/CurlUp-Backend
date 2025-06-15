@@ -1,12 +1,24 @@
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
-app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"message": "Hello Ota and Caroline!"}
+from backend.v1.app.api import router as router
 
 
-@app.get("/dashboard")
-def read_root():
-    return {"message": "This is My Dashboard!"}
+def create_app() -> FastAPI:
+    app = FastAPI()
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    app.include_router(router, prefix="/api")
+
+    return app
+
+
+app = create_app()
+
