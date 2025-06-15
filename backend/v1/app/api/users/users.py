@@ -17,10 +17,10 @@ async def register(
 
 @router.post("/login", response_model=UserInDB, tags=["users"])
 async def register(
-        user: UserInDB = Body(..., embed=True)
+        user
 ):
     print(user)
-    return UserInDB(**user.dict())
+    return user
 
 
 
