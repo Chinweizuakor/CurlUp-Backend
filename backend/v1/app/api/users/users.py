@@ -16,7 +16,7 @@ async def register(
 
 
 @router.post("/login", tags=["users"])
-async def register(
+async def login(
         user
 ):
     print(user)
