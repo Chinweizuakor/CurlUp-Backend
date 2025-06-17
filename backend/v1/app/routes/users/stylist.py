@@ -7,14 +7,6 @@ router = APIRouter()
 
 
 @router.post("/register", response_model=StylistPublic, tags=["stylists"])
-async def register(
-    new_user: StylistCreate = Body(..., embed=True)
-):
+async def register(new_user: StylistCreate = Body(..., embed=True)):
     print(new_user)
     return StylistPublic(**new_user.dict())
-
-
-
-
-
-
