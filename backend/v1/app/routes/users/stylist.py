@@ -1,8 +1,6 @@
-from typing import List
-
 from fastapi import APIRouter, Body
 
-from backend.v1.app.api.models.user import StylistCreate, StylistPublic
+from backend.v1.app.models.user import StylistCreate, StylistPublic
 
 
 router = APIRouter()

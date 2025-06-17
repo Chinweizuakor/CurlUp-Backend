@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter
 
-from backend.v1.app.api.models.system import HealthCheckResponse
+from backend.v1.app.models.system import HealthCheckResponse
 
 
 router = APIRouter()

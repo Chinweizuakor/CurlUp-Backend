@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Body
 
-from backend.v1.app.api.models.user import UserCreate, UserPublic, UserInDB
+from backend.v1.app.models.user import UserCreate, UserPublic, UserInDB
 
 
 router = APIRouter()
