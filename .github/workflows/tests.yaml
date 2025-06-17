@@ -26,8 +26,8 @@ jobs:
 
       - name: Format Python scripts with Ruff
         run: |
-          python -m ruff format src/ tests/
+          python -m ruff format backend/ tests/
 
       - name: Lint Python scripts with Ruff
         run: |
-          python -m ruff check src/ tests/
+          python -m ruff check backend/ tests/
