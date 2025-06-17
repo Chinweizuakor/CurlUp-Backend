@@ -31,3 +31,11 @@ jobs:
       - name: Lint Python scripts with Ruff
         run: |
           python -m ruff check backend/ tests/
+
+      - name: Run test with pytest
+        run: |
+          if ls tests/*.py 1> /dev/null 2>&1; then
+            pytest -v tests/
+          else
+            echo "No tests found, skipping..."
+          fi

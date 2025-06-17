@@ -14,5 +14,5 @@ on:
 jobs:
   tests:
     name: Run Test
-    uses: ./.github/workflows/tests.yaml
+    uses: ./.github/workflows/lint-test.yaml
     secrets: inherit

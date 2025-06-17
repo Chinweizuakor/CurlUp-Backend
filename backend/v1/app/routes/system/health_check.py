@@ -1,4 +1,5 @@
 """CurlUp Backend System HealthCheck Routes."""
+
 from fastapi import APIRouter
 
 from backend.v1.app.models.system import HealthCheckResponse
