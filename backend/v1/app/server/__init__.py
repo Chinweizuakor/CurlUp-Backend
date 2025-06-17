@@ -1,1 +1,1 @@
-"""CurlUp Backend Server Module."""
+"""CurlUp Backend System Server."""

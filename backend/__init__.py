@@ -1,1 +1,1 @@
-"""Backend for the CurlUp System."""
+"""CurlUp Backend System."""

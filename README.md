@@ -16,3 +16,18 @@ This repository contains the backend codebase for the CurlUp user and vendor man
  - Flexible Appointment Scheduling
 
  - Payment Integration
+
+
+ ### Build and Run Container
+
+ > :warning: You need to have Docker Desktop Installed to Develop the CurlUp Backend Locally
+
+- Build
+```bash
+docker build -t curlup-dev .
+```
+
+- Run
+```bash
+docker run -it --name curlup-dev-container -v .:/workspace -p 8000:8000 curlup-dev
+```
