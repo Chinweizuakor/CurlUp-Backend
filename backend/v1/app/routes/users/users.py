@@ -1,0 +1,19 @@
+"""CurlUp Backend System Customer Routes."""
+
+from fastapi import APIRouter, Body
+
+from backend.v1.app.models.user import UserCreate, UserPublic, UserInDB
+
+
+router = APIRouter()
+
+
+@router.post("/register", response_model=UserPublic, tags=["users"])
+async def register(new_user: UserCreate = Body(..., embed=True)):
+    return UserPublic(**new_user.dict())
+
+
+@router.post("/login", tags=["users"])
+async def login(user: UserInDB = Body(..., embed=True)):
+    print(user)
+    return user

@@ -8,6 +8,7 @@ class UserBase(BaseModel):
     """
     All common characteristics of our users
     """
+
     first_name: str
     last_name: str
     email: str
@@ -16,15 +17,16 @@ class UserBase(BaseModel):
     is_superuser: bool = False
 
 
-
 class UserCreate(UserBase):
     "attributes required to create a new resource - used at POST requests"
+
     password: constr(min_length=7, max_length=100)
     username: constr(min_length=3, max_length=20)
 
 
 class StylistCreate(UserBase):
     "attributes required to create a new resource - used at POST requests"
+
     password: constr(min_length=7, max_length=100)
     username: constr(min_length=3, max_length=20)
     certificate: str
@@ -36,6 +38,7 @@ class UserPublic(UserBase):
 
 class StylistPublic(UserBase):
     pass
+
 
 # class BusinessCreate(UserBase):
 #     "attributes required to create a new resource - used at POST requests"

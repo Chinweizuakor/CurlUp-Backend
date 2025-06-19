@@ -1,7 +1,9 @@
+"""CurlUp Backend Server Script."""
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from backend.v1.app.api import router as router
+from backend.v1.app.routes import router as router
 
 
 def create_app() -> FastAPI:
@@ -21,4 +23,3 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
-
