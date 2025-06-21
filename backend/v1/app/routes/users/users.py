@@ -14,6 +14,6 @@ async def register(new_user: UserCreate = Body(..., embed=True)):
 
 
 @router.post("/login", tags=["users"])
-async def login(user: UserInDB = Body(..., embed=True)):
+async def login(user: UserInDB = Body(..., embed=False)):
     print(user)
     return user
