@@ -1,12 +1,12 @@
-from fastapi import APIRouter, Body
+"""CurlUp Backend System Stylist Routes."""
 
-from backend.v1.app.models.user import StylistCreate, StylistPublic
+from fastapi import APIRouter
 
+from backend.v1.app.models.users import StylistCreate, StylistPublic
 
 router = APIRouter()
 
 
 @router.post("/register", response_model=StylistPublic, tags=["stylists"])
-async def register(new_user: StylistCreate = Body(..., embed=True)):
-    print(new_user)
+async def register(new_user: StylistCreate) -> StylistPublic:
     return StylistPublic(**new_user.dict())
