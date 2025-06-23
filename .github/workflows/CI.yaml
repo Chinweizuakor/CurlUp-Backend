@@ -16,3 +16,8 @@ jobs:
     name: Run Test
     uses: ./.github/workflows/lint-test.yaml
     secrets: inherit
+
+  docker:
+    name: Build and Run Docker
+    uses: ./.github/workflows/build-docker.yaml 
+    secrets: inherit
