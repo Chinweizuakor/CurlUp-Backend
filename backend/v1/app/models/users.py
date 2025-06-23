@@ -162,3 +162,12 @@ class UserLogin(BaseModel):
     username: str | None = None 
     email: EmailStr | None = None
     password: str
+
+    @model_validator(mode="before")
+    @classmethod
+    def ensure_exactly_one_identifier(cls, data: dict) -> dict:
+        username = data.get("username")
+        email = data.get("email")
+        if (username is not None and email is not None) or (username is None and email is None):
+            raise ValueError("Exactly one of username or email must be provided")
+        return data
