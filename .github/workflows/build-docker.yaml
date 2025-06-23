@@ -53,6 +53,23 @@ jobs:
     #         exit 1
     #       fi
 
+      # - name: Log in to GHCR
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
+
+      # # Step 8: Tag the image for GHCR
+      # - name: Tag Docker image for GHCR
+      #   run: |
+      #     docker tag curlup-dev ghcr.io/${{ github.repository_owner }}/curlup-dev:latest
+
+      # # Step 9: Push the image to GHCR
+      # - name: Push Docker image to GHCR
+      #   run: |
+      #     docker push ghcr.io/${{ github.repository_owner }}/curlup-dev:latest
+
       - name: Clean up Docker
         if: always()
         run: |
