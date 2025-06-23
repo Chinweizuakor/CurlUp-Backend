@@ -38,4 +38,6 @@ async def login(user: UserLogin) -> UserLogin:
     if not user.username and not user.email:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Provide either the Username or Email to login.")
-    return UserLogin(**user.model_dump(exclude_none=True))
+    return UserLogin(**user.model_dump())
+
+
