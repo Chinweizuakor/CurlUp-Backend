@@ -3,9 +3,8 @@ name: Build and Run CurlUp Container
 on:
   workflow_call
 
-
 jobs:
-  build-and-test:
+  Build-Run-Push:
     runs-on: ubuntu-latest
 
     steps:
