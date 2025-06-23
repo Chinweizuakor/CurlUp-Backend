@@ -149,3 +149,16 @@ class StylistPublic(StylistBase):
 class StylistLogin(BaseModel):
     email: EmailStr
     password: str
+
+
+class UserLogin(BaseModel):
+    """
+    Pydantic model for user login credentials.
+    - username: An optional string representing the user's username.
+    - email: An optional email string representing the user's email address.
+              At least one of username or email should be provided.
+    - password: A string representing the user's password.
+    """
+    username: str | None = None 
+    email: EmailStr | None = None
+    password: str
