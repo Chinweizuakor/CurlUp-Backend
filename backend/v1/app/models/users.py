@@ -61,7 +61,7 @@ class UserCreate(UserBase):
 
     @field_validator("password")
     @classmethod
-    def validate_password_complexity(cls, v: str, info: ValidationInfo) -> str:
+    def validate_password(cls, v: str, info: ValidationInfo) -> str:
         # Regex: At least one uppercase, one lowercase, one digit, one special character
         pattern = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};:'\",.<>?]).{8,25}$"
         if not re.match(pattern, v):
@@ -109,7 +109,7 @@ class StylistCreate(StylistBase):
 
     @field_validator("password")
     @classmethod
-    def validate_password_complexity(cls, v: str, info: ValidationInfo) -> str:
+    def validate_password(cls, v: str, info: ValidationInfo) -> str:
         import re
 
         # Regex: At least one uppercase, one lowercase, one digit, one special character
@@ -144,16 +144,6 @@ class StylistPublic(StylistBase):
 #     # @validator("username", pre=True)
 #     def username_is_valid(cls, username: str) -> str:
 #         return validate_username(username)
-
-
-class UserLoginEmail(BaseModel):
-    email: EmailStr
-    password: str
-
-
-class UserLoginUsername(BaseModel):
-    username: str
-    password: str
 
 
 class StylistLogin(BaseModel):
