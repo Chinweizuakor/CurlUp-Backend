@@ -103,6 +103,7 @@ def test_timezone_instantiation_invalid():
         pass
 
 
+@pytest.mark.unit
 @pytest.mark.parametrize(
     "data, should_raise, error_message",
     [
@@ -174,6 +175,8 @@ def test_user_login_validation(data, should_raise, error_message):
         assert user.email == data.get("email")
         assert user.password == data["password"]
 
+
+@pytest.mark.unit
 @pytest.mark.parametrize(
     "username, email, password",
     [
@@ -190,6 +193,7 @@ def test_user_login_valid_combinations(username, email, password):
     assert user.password == password
 
 
+@pytest.mark.unit
 def test_user_login_exactly_one_identifier():
     """Test that exactly one of username or email is required."""
     # Test neither provided
@@ -203,6 +207,7 @@ def test_user_login_exactly_one_identifier():
     assert "exactly one of username or email must be provided" in str(exc_info.value).lower()
 
 
+@pytest.mark.unit
 @pytest.mark.parametrize(
     "data, should_raise, error_message",
     [
@@ -335,7 +340,10 @@ def test_user_login_exactly_one_identifier():
                 "mobile": "1234567890",
             },
             True,
-            "Input should be 'UTC', 'GMT', 'EAT', 'CAT', 'WAT', 'EET', 'CET', 'AEST', 'EST', 'PST', 'CST' or 'MST'",
+            (
+                "Input should be 'UTC', 'GMT', 'EAT', 'CAT', 'WAT', 'EET', 'CET', 'AEST', "
+                "'EST', 'PST', 'CST' or 'MST'"
+            ),
         ),
         # Invalid case: None for required field (mobile)
         (
@@ -402,7 +410,10 @@ def test_user_base_validation(data, should_raise, error_message):
         ),
     ],
 )
-def test_user_base_valid_combinations(first_name, middle_name, last_name, email, username, gender, dateofbirth, timezone, mobile):
+def test_user_base_valid_combinations(first_name,
+                                      middle_name, last_name,
+                                      email, username, gender,
+                                      dateofbirth, timezone, mobile):
     """Test valid combinations of fields."""
     data = {
         "first_name": first_name,
