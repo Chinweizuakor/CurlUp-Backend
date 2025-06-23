@@ -1,0 +1,18 @@
+name: CurlUp Pipeline CI
+
+on:
+  push:
+    branches:
+      - "main"
+      - "feature/**"
+      - "dev"
+      - "uat"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  tests:
+    name: Run Test
+    uses: ./.github/workflows/lint-test.yaml
+    secrets: inherit
