@@ -21,3 +21,4 @@ jobs:
     name: Build and Run Docker
     uses: ./.github/workflows/build-docker.yaml 
     secrets: inherit
+    needs: tests
