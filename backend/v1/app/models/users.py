@@ -46,7 +46,7 @@ class UserBase(BaseModel):
     email: EmailStr
     username: str = Field(..., min_length=1)
     gender: Gender
-    dateofbirth: date
+    date_of_birth: date
     timezone: Timezone | None = None
     mobile: str
 

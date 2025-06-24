@@ -219,7 +219,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "john.doe@example.com",
                 "username": "johndoe",
                 "gender": Gender.MALE,
-                "dateofbirth": date(1990, 1, 1),
+                "date_of_birth": date(1990, 1, 1),
                 "mobile": "1234567890",
             },
             False,
@@ -234,7 +234,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "jane.smith@example.com",
                 "username": "janesmith",
                 "gender": Gender.FEMALE,
-                "dateofbirth": date(1985, 5, 15),
+                "date_of_birth": date(1985, 5, 15),
                 "timezone": Timezone.UTC,
                 "mobile": "9876543210",
             },
@@ -249,7 +249,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "john.doe@example.com",
                 "username": "johndoe",
                 "gender": Gender.MALE,
-                "dateofbirth": date(1990, 1, 1),
+                "date_of_birth": date(1990, 1, 1),
                 "mobile": "1234567890",
                 "middle_name": None,
                 "timezone": None,
@@ -264,7 +264,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "john.doe@example.com",
                 "username": "johndoe",
                 "gender": Gender.MALE,
-                "dateofbirth": date(1990, 1, 1),
+                "date_of_birth": date(1990, 1, 1),
                 "mobile": "1234567890",
             },
             True,
@@ -278,7 +278,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "john.doe@example.com",
                 "username": "",
                 "gender": Gender.MALE,
-                "dateofbirth": date(1990, 1, 1),
+                "date_of_birth": date(1990, 1, 1),
                 "mobile": "1234567890",
             },
             True,
@@ -292,7 +292,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "invalid-email",
                 "username": "johndoe",
                 "gender": Gender.MALE,
-                "dateofbirth": date(1990, 1, 1),
+                "date_of_birth": date(1990, 1, 1),
                 "mobile": "1234567890",
             },
             True,
@@ -306,7 +306,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "john.doe@example.com",
                 "username": "johndoe",
                 "gender": "OTHER",
-                "dateofbirth": date(1990, 1, 1),
+                "date_of_birth": date(1990, 1, 1),
                 "mobile": "1234567890",
             },
             True,
@@ -320,7 +320,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "john.doe@example.com",
                 "username": "johndoe",
                 "gender": Gender.MALE,
-                "dateofbirth": "1990-13-01",  # Invalid month
+                "date_of_birth": "1990-13-01",  # Invalid month
                 "mobile": "1234567890",
             },
             True,
@@ -335,7 +335,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "john.doe@example.com",
                 "username": "johndoe",
                 "gender": Gender.MALE,
-                "dateofbirth": date(1990, 1, 1),
+                "date_of_birth": date(1990, 1, 1),
                 "timezone": "Invalid/Zone",
                 "mobile": "1234567890",
             },
@@ -353,7 +353,7 @@ def test_user_login_exactly_one_identifier():
                 "email": "john.doe@example.com",
                 "username": "johndoe",
                 "gender": Gender.MALE,
-                "dateofbirth": date(1990, 1, 1),
+                "date_of_birth": date(1990, 1, 1),
                 "mobile": None,
             },
             True,
@@ -378,13 +378,13 @@ def test_user_base_validation(data, should_raise, error_message):
         assert user.email == data["email"]
         assert user.username == data["username"]
         assert user.gender == data["gender"]
-        assert user.dateofbirth == data["dateofbirth"]
+        assert user.date_of_birth == data["date_of_birth"]
         assert user.timezone == data.get("timezone")
         assert user.mobile == data["mobile"]
 
 
 @pytest.mark.parametrize(
-    "first_name, middle_name, last_name, email, username, gender, dateofbirth, timezone, mobile",
+    "first_name, middle_name, last_name, email, username, gender, date_of_birth, timezone, mobile",
     [
         (
             "John",
@@ -413,7 +413,7 @@ def test_user_base_validation(data, should_raise, error_message):
 def test_user_base_valid_combinations(first_name,
                                       middle_name, last_name,
                                       email, username, gender,
-                                      dateofbirth, timezone, mobile):
+                                      date_of_birth, timezone, mobile):
     """Test valid combinations of fields."""
     data = {
         "first_name": first_name,
@@ -422,7 +422,7 @@ def test_user_base_valid_combinations(first_name,
         "email": email,
         "username": username,
         "gender": gender,
-        "dateofbirth": dateofbirth,
+        "date_of_birth": date_of_birth,
         "timezone": timezone,
         "mobile": mobile,
     }
@@ -433,7 +433,7 @@ def test_user_base_valid_combinations(first_name,
     assert user.email == email
     assert user.username == username
     assert user.gender == gender
-    assert user.dateofbirth == dateofbirth
+    assert user.date_of_birth == date_of_birth
     assert user.timezone == timezone
     assert user.mobile == mobile
 
@@ -454,7 +454,7 @@ def test_user_base_empty_strings():
         "email": "john.doe@example.com",
         "username": "johndoe",
         "gender": Gender.MALE,
-        "dateofbirth": date(1990, 1, 1),
+        "date_of_birth": date(1990, 1, 1),
         "mobile": "1234567890",
     }
     with pytest.raises(ValidationError) as exc_info:
