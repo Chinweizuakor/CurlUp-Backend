@@ -281,7 +281,7 @@ def test_user_login_exactly_one_identifier():
                 "dateofbirth": date(1990, 1, 1),
                 "mobile": "1234567890",
             },
-            False,
+            True,
             None,
         ),
         # Invalid case: Invalid email format
@@ -446,17 +446,17 @@ def test_user_base_required_fields():
     assert "field required" in str(exc_info.value).lower()
 
 
-# def test_user_base_empty_strings():
-#     """Test that empty strings are rejected for required string fields."""
-#     invalid_data = {
-#         "first_name": "",
-#         "last_name": "Doe",
-#         "email": "john.doe@example.com",
-#         "username": "johndoe",
-#         "gender": Gender.MALE,
-#         "dateofbirth": date(1990, 1, 1),
-#         "mobile": "1234567890",
-#     }
-#     with pytest.raises(ValidationError) as exc_info:
-#         UserBase(**invalid_data)
-#     assert "string should have at least 1 character" in str(exc_info.value).lower()
+def test_user_base_empty_strings():
+    """Test that empty strings are rejected for required string fields."""
+    invalid_data = {
+        "first_name": "",
+        "last_name": "Doe",
+        "email": "john.doe@example.com",
+        "username": "johndoe",
+        "gender": Gender.MALE,
+        "dateofbirth": date(1990, 1, 1),
+        "mobile": "1234567890",
+    }
+    with pytest.raises(ValidationError) as exc_info:
+        UserBase(**invalid_data)
+    assert "string should have at least 1 character" in str(exc_info.value).lower()

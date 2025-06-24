@@ -40,11 +40,11 @@ class UserBase(BaseModel):
     All common characteristics of our users
     """
 
-    first_name: str
-    middle_name: str | None = None
-    last_name: str
+    first_name: str = Field(..., min_length=1)
+    middle_name: str | None = Field(None, min_length=1)
+    last_name: str = Field(..., min_length=1)
     email: EmailStr
-    username: str
+    username: str = Field(..., min_length=1)
     gender: Gender
     dateofbirth: date
     timezone: Timezone | None = None
