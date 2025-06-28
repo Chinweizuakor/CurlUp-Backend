@@ -1,0 +1,77 @@
+name: Build and Run CurlUp Container
+
+on:
+  workflow_call
+
+jobs:
+  Build-Run-Push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t curlup-dev .
+
+      - name: Run Docker container
+        run: |
+          docker run -d --name curlup-dev-container -v $(pwd):/workspace -p 8000:8000 curlup-dev
+          
+      - name: Wait for FastAPI to be ready
+        run: |
+          sleep 5
+          for i in {1..10}; do
+            if curl -s http://localhost:8000/docs > /dev/null; then
+              echo "FastAPI is up!"
+              break
+            fi
+            echo "Waiting for FastAPI..."
+            sleep 5
+          done
+          # Fail if FastAPI doesn't start
+          curl -s http://localhost:8000/docs > /dev/null || exit 1
+
+    #   # Step 6: Test the /login endpoint
+    #   - name: Test login endpoint
+    #     run: |
+    #       response=$(curl -s -X POST http://localhost:8000/login \
+    #         -H "Content-Type: application/json" \
+    #         -d '{"username": null, "email": "user@example.com", "password": "string"}')
+    #       echo "Response: $response"
+    #       # Verify the response excludes null fields
+    #       expected='{"email":"user@example.com","password":"string"}'
+    #       if [ "$response" = "$expected" ]; then
+    #         echo "Test passed: Null fields excluded"
+    #       else
+    #         echo "Test failed: Expected $expected, got $response"
+    #         exit 1
+    #       fi
+
+      # - name: Log in to GHCR
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
+
+      # # Step 8: Tag the image for GHCR
+      # - name: Tag Docker image for GHCR
+      #   run: |
+      #     docker tag curlup-dev ghcr.io/${{ github.repository_owner }}/curlup-dev:latest
+
+      # # Step 9: Push the image to GHCR
+      # - name: Push Docker image to GHCR
+      #   run: |
+      #     docker push ghcr.io/${{ github.repository_owner }}/curlup-dev:latest
+
+      - name: Clean up Docker
+        if: always()
+        run: |
+          docker stop curlup-dev-container || true
+          docker rm curlup-dev-container || true
+          docker rmi curlup-dev || true
