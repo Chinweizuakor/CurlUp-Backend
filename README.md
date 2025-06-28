@@ -31,3 +31,8 @@ docker build -t curlup-dev .
 ```bash
 docker run -it --name curlup-dev-container -v .:/workspace -p 8000:8000 curlup-dev
 ```
+
+<div class="alert alert-block alert-info">
+<b>Tip:</b> Use blue boxes (alert-info) for tips and notes. 
+If it’s a note, you don’t have to include the word “Note”.
+</div>
