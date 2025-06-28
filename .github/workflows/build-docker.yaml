@@ -11,6 +11,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Generate datetime-based tag
+        id: datetime
+        run: echo "datetime=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -20,7 +24,7 @@ jobs:
 
       - name: Run Docker container
         run: |
-          docker run -d --name curlup-dev-container -v $(pwd):/workspace -p 8000:8000 curlup-dev
+          docker run -d --name curlup-dev-container -p 8000:8000 curlup-dev
           
       - name: Wait for FastAPI to be ready
         run: |
@@ -36,38 +40,32 @@ jobs:
           # Fail if FastAPI doesn't start
           curl -s http://localhost:8000/docs > /dev/null || exit 1
 
-    #   # Step 6: Test the /login endpoint
-    #   - name: Test login endpoint
-    #     run: |
-    #       response=$(curl -s -X POST http://localhost:8000/login \
-    #         -H "Content-Type: application/json" \
-    #         -d '{"username": null, "email": "user@example.com", "password": "string"}')
-    #       echo "Response: $response"
-    #       # Verify the response excludes null fields
-    #       expected='{"email":"user@example.com","password":"string"}'
-    #       if [ "$response" = "$expected" ]; then
-    #         echo "Test passed: Null fields excluded"
-    #       else
-    #         echo "Test failed: Expected $expected, got $response"
-    #         exit 1
-    #       fi
-
-      # - name: Log in to GHCR
-      #   uses: docker/login-action@v3
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
       #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ secrets.AWS_REGION }}
 
-      # # Step 8: Tag the image for GHCR
-      # - name: Tag Docker image for GHCR
-      #   run: |
-      #     docker tag curlup-dev ghcr.io/${{ github.repository_owner }}/curlup-dev:latest
+      # - name: Log in to Amazon ECR
+      #   uses: aws-actions/amazon-ecr-login@v2
 
-      # # Step 9: Push the image to GHCR
-      # - name: Push Docker image to GHCR
+
+      # - name: Tag Docker image
       #   run: |
-      #     docker push ghcr.io/${{ github.repository_owner }}/curlup-dev:latest
+      #     ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
+      #     REGION=${{ secrets.AWS_REGION }}
+      #     ECR_REPO=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/curlup-dev
+      #     docker tag curlup-dev $ECR_REPO:latest
+      #     docker tag curlup-dev $ECR_REPO:${{ steps.datetime.outputs.datetime }}
+
+      # - name: Push Docker images to ECR
+      #   run: |
+      #     ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
+      #     REGION=us-east-1
+      #     ECR_REPO=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/curlup-dev
+      #     docker push $ECR_REPO:latest
+      #     docker push $ECR_REPO:${{ steps.datetime.outputs.datetime }}
 
       - name: Clean up Docker
         if: always()

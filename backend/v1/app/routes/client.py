@@ -1,32 +1,32 @@
-"""CurlUp Backend System Customer Routes."""
+"""CurlUp Backend System Client Routes."""
 
 from fastapi import APIRouter, HTTPException, status
 
-from backend.v1.app.models.users import UserCreate, UserLogin, UserPublic
+from backend.v1.app.models.client import ClientCreate, ClientLogin
 
 router = APIRouter()
 
 
-@router.post("/register", response_model=UserPublic, tags=["users"])
-async def register(user: UserCreate) -> UserPublic:
-    """Register a New User."""
-    return UserPublic(**user.model_dump())
+@router.post("/register", response_model=ClientCreate, tags=["Clients"])
+async def register(user: ClientCreate) -> ClientCreate:
+    """Register a Client to the CurlUp Platform."""
+    return ClientCreate(**user.model_dump())
 
 
-@router.post("/login", response_model=UserLogin, tags=["users"])
-async def login(user: UserLogin) -> UserLogin:
+@router.post("/login", response_model=ClientLogin, tags=["Clients"])
+async def login(user: ClientLogin) -> ClientLogin:
     """
     Handles user login requests, supporting login via username or email.
 
-    This endpoint accepts a UserLogin object in the request body.
+    This endpoint accepts a ClientLogin object in the request body.
     It returns the received user login details.
 
     Args:
-        user (UserLogin): The UserLogin object containing username, email (optional),
+        user (ClientLogin): The ClientLogin object containing username, email (optional),
                           and password from the request body.
 
     Returns:
-        UserLogin: The received UserLogin object.
+        ClientLogin: The received ClientLogin object.
     """
     if user.username:
         print(f"Received login attempt for username: {user.username}")
@@ -38,4 +38,4 @@ async def login(user: UserLogin) -> UserLogin:
     if not user.username and not user.email:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Provide either the Username or Email to login.")
-    return UserLogin(**user.model_dump())
+    return ClientLogin(**user.model_dump())

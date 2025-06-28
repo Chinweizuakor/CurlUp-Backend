@@ -1,11 +1,10 @@
-"""CurlUp Backend System HealthCheck Routes."""
+"""CurlUp Backend System System Routes."""
 
 from fastapi import APIRouter
 
 from backend.v1.app.models.system import HealthCheckResponse
 
 router = APIRouter()
-
 
 response = {
     "service": "Database",
@@ -18,17 +17,24 @@ response = {
 }
 
 
-@router.get("/health-check/database", response_model=HealthCheckResponse)
+@router.get("/", tags=["System"])
+async def home():
+    """CurlUp Home Endpoint"""
+    return {"message": "Welcome to the CurlUp API"}
+
+
+@router.get("/health-check/database", response_model=HealthCheckResponse,
+            tags=["System"])
 async def health_check():
     return HealthCheckResponse(**response)
 
 
-@router.get("/health-check/database/kunle/{version}")
+@router.get("/health-check/database/kunle/{version}", tags=["System"])
 async def health_check_1(state1: str, state2: str, database_name: str, version: str):
     return {"name": "Kunle"}
 
 
-@router.get("/health-check/database/{database_name}/{version}")
+@router.get("/health-check/database/{database_name}/{version}", tags=["System"])
 async def health_check_2(state1: str, state2: str, database_name: str, version: str):
     return {
         "system": "My Web App",
