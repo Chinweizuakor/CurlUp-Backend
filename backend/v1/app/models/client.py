@@ -16,26 +16,128 @@ class Gender(Enum):
 
 class ClientBase(BaseModel):
     """
-    All common characteristics of our users
+    Model to Validate the common characteristics of clients who
+    use the CurlUp website for services.    
     """
+    first_name: str = Field(
+        ..., 
+        min_length=1,
+        max_length=25,
+        description="The client's first or given name. This field is required."
+    )
+    middle_name: str | None = Field(
+        None,
+        min_length=1,
+        max_length=25,
+        description="The client's middle name. This field is optional."
+    )
+    last_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=25,
+        description="The client's last name. This field is required."
+    )
+    email: EmailStr = Field(
+        ...,
+        description="The client's primary email address. It must be a valid email format."
+    )
+    username: str = Field(
+        ...,
+        min_length=1,
+        max_length=25,
+        description="A unique username for the client to log in. This field is required."
+    )
+    gender: Gender = Field(
+        ...,
+        description="The client's gender, selected from a predefined list of options."
+    )
+    date_of_birth: date = Field(
+        ...,
+        description="The client's date of birth in YYYY-MM-DD format. This field is required."
+    )
+    mobile: str = Field(
+        ...,
+        min_length=7,
+        max_length=20,
+        description=(
+            "The client's mobile phone number, including country code if applicable. "
+            "Must be between 7 and 20 characters long."
+        )
+    )
+    address_1: str = Field(
+        ...,
+        min_length=1,
+        max_length=50,
+        description=(
+            "The first line of the client's street address. "
+            "This field is required for a complete address."
+        )
+    )
+    address_2: str | None = Field(
+        None,
+        min_length=1,
+        max_length=50,
+        description=(
+            "The second line of the client's street address, such as an apartment or suite number. "
+            "This field is optional."
+        )
+    )
+    city: str | None = Field(
+        None,
+        description=(
+            "The city of the client's address. "
+            "This field is optional for a complete address."
+        )
+    )
+    state: str | None = Field(
+        None,
+        description=(
+            "The state, province, or region of the client's address. "
+            "This field is optional for a complete address."
+        )
+    )
+    country: str | None = Field(
+        None,
+        description=(
+            "The country of the client's address. "
+            "This field is optional for a complete address."
+        )
+    )
+    zip: str | None = Field(
+        None,
+        max_length=5,
+        description=(
+            "The client's postal or ZIP code. Must be a maximum of 5 characters long. "
+            "This field is optional for a complete address."
+        )
+    )
 
-    first_name: str = Field(..., min_length=1)
-    middle_name: str | None = Field(None, min_length=1)
-    last_name: str = Field(..., min_length=1)
-    email: EmailStr
-    username: str = Field(..., min_length=1)
-    gender: Gender
-    date_of_birth: date
-    mobile: str
+    @field_validator("mobile")
+    @classmethod
+    def validate_mobile_format(cls, v: str, info: ValidationInfo) -> str:
+        """
+        This function uses regular expression framework in validating
+        the format of the mobile number using a regular expression.
+        """
+        pattern = r'^\+?[\d\s\-\(\)]+$'
+        if not re.match(pattern, v):
+            raise ValueError(
+                'Invalid phone number format. Must contain only digits, spaces, dashes, or '
+                'parentheses, and can start with a "+".'
+            )
+        return v
+    
+    @field_validator("username")
+    @classmethod
+    def lowercase_username(cls, v: str) -> str:
+        return v.lower()
 
 
 class ClientCreate(ClientBase):
-    """
-    Attributes required to create a new resource - used at POST requests
-    """
-
+    """Attributes required to create a Client Account."""
     password: str = Field(min_length=8, max_length=25)
     confirm_password: str = Field(min_length=8, max_length=25)
+    user_type: str = "User"
 
     @field_validator("password")
     @classmethod

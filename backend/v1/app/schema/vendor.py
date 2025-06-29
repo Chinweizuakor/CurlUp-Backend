@@ -1,1 +1,1 @@
-"""CurlUp Backend Salon Table Schema."""
+"""CurlUp Backend System Vendor Tables Schema."""

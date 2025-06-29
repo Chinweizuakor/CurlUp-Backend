@@ -31,5 +31,5 @@ docker build -t curlup-dev .
 
 - Run
 ```bash
-docker run -it --name curlup-dev-container -v .:/workspace -p 8000:8000 curlup-dev
+docker run -it --name curlup-dev-container -p 8000:8000 curlup-dev
 ```
