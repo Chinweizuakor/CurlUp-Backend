@@ -7,13 +7,13 @@ from backend.v1.app.models.client import ClientCreate, ClientLogin
 router = APIRouter()
 
 
-@router.post("/register", response_model=ClientCreate, tags=["Clients"])
+@router.post("/register", response_model=ClientCreate, tags=["Client"])
 async def register(user: ClientCreate) -> ClientCreate:
     """Register a Client to the CurlUp Platform."""
     return ClientCreate(**user.model_dump())
 
 
-@router.post("/login", response_model=ClientLogin, tags=["Clients"])
+@router.post("/login", response_model=ClientLogin, tags=["Client"])
 async def login(user: ClientLogin) -> ClientLogin:
     """
     Handles user login requests, supporting login via username or email.
