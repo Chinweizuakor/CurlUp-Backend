@@ -1,0 +1,15 @@
+networks:
+  curlup-network:
+services:  
+  curlup-backend:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    env_file:
+      .env
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    networks:
+      - curlup-network
