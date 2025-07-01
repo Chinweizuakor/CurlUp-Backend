@@ -18,28 +18,32 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      - name: Run Docker Compose Stack
         run: |
-          docker build -t curlup-dev .
+          docker compose up --build
 
-      - name: Run Docker container
+      - name: Wait for FastAPI Server to be ready
         run: |
-          docker run -d --name curlup-dev-container -p 8000:8000 curlup-dev
-          
-      - name: Wait for FastAPI to be ready
-        run: |
-          sleep 5
+          sleep 30
           for i in {1..10}; do
             if curl -s http://localhost:8000/docs > /dev/null; then
               echo "FastAPI is up!"
               break
             fi
             echo "Waiting for FastAPI..."
-            sleep 5
+            sleep 30
           done
           # Fail if FastAPI doesn't start
           curl -s http://localhost:8000/docs > /dev/null || exit 1
+      
+      - name: Clean Up Docker Compose Stack
+        run: |
+          docker compose down
 
+      - name: Build Docker image
+        run: |
+          docker build -t curlup-dev .
+      
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v2
       #   with:
