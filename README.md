@@ -20,16 +20,63 @@ This repository contains the backend codebase for the CurlUp User and Vendor Man
  - Payment Integration
 
 
- ### Build and Run Container
+ ### Build and Run Container (Server and/or Database)
 
  > :warning: You need to have Docker Desktop Installed to Develop the CurlUp Backend Locally
 
-- Build
+- Run Server Only
+
 ```bash
+# Build the Docker Image
 docker build -t curlup-dev .
+
+# Run the Docker Container
+docker run -it --name curlup-dev-container -p 8000:8000 curlup-dev
 ```
 
-- Run
+- Run Server + Database
+
 ```bash
-docker run -it --name curlup-dev-container -p 8000:8000 curlup-dev
+# Start Server and Databasefrom Scratch
+docker compose up --build
+
+# Start Server and Database from Existing Images
+docker compose up
+
+# Stop Server and Database
+docker compose stop
+
+# Stop and Remove Server and Database
+docker compose down
+```
+
+- Database Operations
+
+```bash
+# Connect to the Database Container
+docker exec -it curlup-curlup-db-1 bash
+
+# Connect to PostgreSQL
+psql -U postgres
+
+\l # List all databases
+\l+ # List all databases with more details
+
+\c curlup # Connect to the curlup database
+\d # List all tables in the current database
+\dt # List all tables in the current database with more details
+\dn # List all schemas in the current database
+
+\q # Exit psql
+```
+
+- Generate a Secret Key
+
+```bash 
+import secrets
+
+# Generate a 256-bit secret key
+secret_key = secrets.token_hex(32)
+print(secret_key)
+# Output: 256-bit secret key
 ```
