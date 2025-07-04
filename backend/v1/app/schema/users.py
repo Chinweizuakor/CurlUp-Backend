@@ -1,1 +1,1 @@
-"""CurlUp Backend Users Table Schema."""
+"""CurlUp Backend System Users Tables Schema."""

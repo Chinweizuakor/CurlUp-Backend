@@ -1,0 +1,40 @@
+name: curlup
+
+networks:
+  curlup-network:
+
+services:  
+  curlup-backend:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    env_file:
+      .env
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    networks:
+      - curlup-network
+    depends_on:
+      curlup-db:
+        condition: service_healthy
+
+  curlup-db:
+      image: postgres:latest
+      env_file:
+        - .env
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres -d curlup"]
+        interval: 30s
+        timeout: 30s
+        retries: 5
+      networks:
+        - curlup-network
+
+volumes:
+    postgres_data:
