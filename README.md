@@ -80,3 +80,16 @@ secret_key = secrets.token_hex(32)
 print(secret_key)
 # Output: 256-bit secret key
 ```
+
+- Terraform Scripts to Provision EC2 Resource
+
+```bash
+# Create EC2 Resource
+terraform init
+terraform plan
+terraform apply -auto-approve
+
+# Clean Up Resources
+# This will destroy all resources created by Terraform
+terraform destroy -auto-approve
+```

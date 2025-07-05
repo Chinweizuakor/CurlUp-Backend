@@ -55,7 +55,7 @@ class ClientBase(BaseModel):
         ...,
         description="The client's date of birth in YYYY-MM-DD format. This field is required."
     )
-    mobile: str = Field(
+    phone_number: str = Field(
         ...,
         min_length=7,
         max_length=20,
@@ -103,7 +103,7 @@ class ClientBase(BaseModel):
             "This field is optional for a complete address."
         )
     )
-    zip: str | None = Field(
+    zip_code: str | None = Field(
         None,
         max_length=5,
         description=(
@@ -112,7 +112,7 @@ class ClientBase(BaseModel):
         )
     )
 
-    @field_validator("mobile")
+    @field_validator("phone_number")
     @classmethod
     def validate_mobile_format(cls, v: str, info: ValidationInfo) -> str:
         """
@@ -137,7 +137,6 @@ class ClientCreate(ClientBase):
     """Attributes required to create a Client Account."""
     password: str = Field(min_length=8, max_length=25)
     confirm_password: str = Field(min_length=8, max_length=25)
-    user_type: str = "User"
 
     @field_validator("password")
     @classmethod
@@ -164,6 +163,20 @@ class ClientCreate(ClientBase):
         if self.password != self.confirm_password:
             raise ValueError("Passwords do not match")
         return self
+
+
+class ClientRegisterResponse(BaseModel):
+    """
+    Schema for client registration responses.
+    Contains a message, email and token.
+    """
+    message: str
+    email: EmailStr
+    token: str
+
+
+class ClientVerifyResponse(BaseModel):
+    message: str
 
 
 class ClientStatus(ClientBase):
@@ -193,3 +206,4 @@ class ClientLogin(BaseModel):
         if (username is None and email is None):
             raise ValueError("Please provide a username or an email")
         return data
+

@@ -194,5 +194,26 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-# Ruff
-ruff_cache/
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Terraform variables
+*.tfvars
+*.tfvars.json
+
+# Backup files
+*.backup
+
+# Provider plugins and CLI caches
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive override files (optional)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
