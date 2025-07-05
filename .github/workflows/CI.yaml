@@ -21,7 +21,6 @@ jobs:
     name: Run Security Scan
     uses: ./.github/workflows/security-scan.yaml
     needs: tests
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     secrets: inherit
 
   docker:
