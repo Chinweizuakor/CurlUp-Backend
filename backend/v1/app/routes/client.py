@@ -157,3 +157,4 @@ async def verify_email(token: str,
     response = {"message": "Email verified successfully"}
 
     return ClientVerifyResponse(**response)
+
