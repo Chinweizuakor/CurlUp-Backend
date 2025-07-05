@@ -1,6 +1,5 @@
 """CurlUp Backend Client Tables Schemas."""
 
-import uuid
 from datetime import date
 
 from sqlmodel import Column, Field, SQLModel
@@ -9,8 +8,9 @@ from sqlmodel import Enum as SQLModelEnum
 from backend.v1.app.models.client import Gender
 
 
-class ClientTable(SQLModel, table=True):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
+class Client(SQLModel, table=True):
+    id: str = Field(unique=True, nullable=False, primary_key=True)
+    user_id: str = Field(unique=True, nullable=False)
     first_name: str = Field(max_length=25, nullable=False)
     middle_name: str | None = Field(default=None, max_length=25)
     last_name: str = Field(max_length=25, nullable=False)
