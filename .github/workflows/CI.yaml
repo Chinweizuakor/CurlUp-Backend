@@ -17,6 +17,13 @@ jobs:
     uses: ./.github/workflows/lint-test.yaml
     secrets: inherit
 
+  security_scan:
+    name: Run Security Scan
+    uses: ./.github/workflows/security-scan.yaml
+    needs: tests
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    secrets: inherit
+
   docker:
     name: Build and Run Docker
     uses: ./.github/workflows/build-docker.yaml 
