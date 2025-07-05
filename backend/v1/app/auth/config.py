@@ -7,7 +7,7 @@ load_dotenv()
 ACCESS_TOKEN_EXPIRE_MINUTES=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES",
                                           60))
 ALGORITHM=os.getenv("ALGORITHM", "HS256")
-SECRET_KEY=os.getenv("SECRET_KEY", "dafault secret key")
+SECRET_KEY=os.getenv("SECRET_KEY", "default secret key")
 MAIL_USERNAME=os.getenv("MAIL_USERNAME")
 MAIL_PASSWORD=os.getenv("MAIL_PASSWORD")
 MAIL_FROM=os.getenv("MAIL_FROM", "no-reply@your-domain.com")

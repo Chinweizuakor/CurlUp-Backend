@@ -1,15 +1,17 @@
 """CurlUp Backend System Client Routes."""
 
 # from datetime import UTC, datetime
-
 from fastapi import APIRouter, Depends, HTTPException, status
+from jose import jwt
+from jwt import ExpiredSignatureError, InvalidTokenError
 from sqlmodel import Session, select
 
+from backend.v1.app.auth.config import ALGORITHM, SECRET_KEY
 from backend.v1.app.auth.passwords import hash_password
 from backend.v1.app.auth.tokens import create_verification_token
 from backend.v1.app.database.operations import get_db
-from backend.v1.app.models.client import ClientCreate, ClientRegisterResponse
-from backend.v1.app.models.config import generate_client_id, generate_uuid
+from backend.v1.app.models.client import ClientCreate, ClientRegisterResponse, ClientVerifyResponse
+from backend.v1.app.models.generate import generate_client_id, generate_uuid
 from backend.v1.app.schema.client import Client
 
 router = APIRouter()
@@ -97,3 +99,61 @@ async def register(client: ClientCreate,
         "token": token
     }
     return ClientRegisterResponse(**response)
+
+
+@router.get("/verify/{token}", response_model=ClientVerifyResponse)
+async def verify_email(token: str,
+                db: Session = Depends(get_db)) -> ClientVerifyResponse: # noqa: B008
+    """
+    Verifies a client's email address using a JWT token sent to the email provided for
+    verification.
+
+    This endpoint is typically hit when a user clicks a verification link sent to their email.
+
+    The token is decoded to extract the client's email, and the corresponding client record
+    in the database is updated to set `is_verified` to `True`.
+
+    """
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str | None = payload.get("sub")
+        if email is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid token"
+            )
+    except ExpiredSignatureError as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                "Token has expired. Please request a new verification email."
+            )
+        ) from err
+
+    except InvalidTokenError as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid token"
+        ) from err
+
+    statement = select(Client).where(Client.email == email)
+    client = db.exec(statement).first()
+
+    if not client:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Client not found"
+        )
+
+    if client.is_verified:
+        response = {"message": "Email already verified"}
+        return ClientVerifyResponse(**response)
+
+    # Mark client as verified
+    client.is_verified = True
+    db.add(client)
+    db.commit()
+
+    response = {"message": "Email verified successfully"}
+
+    return ClientVerifyResponse(**response)

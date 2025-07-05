@@ -175,6 +175,10 @@ class ClientRegisterResponse(BaseModel):
     token: str
 
 
+class ClientVerifyResponse(BaseModel):
+    message: str
+
+
 class ClientStatus(ClientBase):
     is_active: bool = True
     is_superuser: bool = False
